@@ -1,0 +1,13 @@
+.custom-sub-form{
+    margin-left: 20px;
+}
+
+.custom-hide{
+    visibility: hidden;
+    width: 0px;
+    height: 0px;
+}
+
+.sticky-offset {
+    top: 56px;
+}

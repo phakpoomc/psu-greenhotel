@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('../partials/head'); %>
+        <script>
+            window.onbeforeprint = (event) => {
+                document.getElementById("sidenav").classList.add("custom-hide");
+                document.getElementById("topnav").classList.add("custom-hide");
+            }
+
+            window.onafterprint = (event) => {
+                document.getElementById("sidenav").classList.remove("custom-hide");
+                document.getElementById("topnav").classList.remove("custom-hide");
+            };
+        </script>
+    </head>
+
+    <body onkeypress="checkPrint(event)">
+        <%- include('../partials/navbar'); %>
+        <%- include('../partials/user/sidebar', {name: username, profilepic: "https://github.com/mdo.png", data: data}); %>
+
+       
+    </body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('../partials/head'); %>
+    </head>
+
+    <body>
+        <%- include('../partials/navbar'); %>
+        <%- include('../partials/banner'); %>
+ 
+        <%- include('../partials/home', {
+            coaching: coaching,
+            workshop: workshop,
+            fieldtrip: fieldtrip,
+            openning: openning,
+            certificate: certificate,
+            training: training
+        }); %>
+
+    </body>
+</html>

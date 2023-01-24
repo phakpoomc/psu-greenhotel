@@ -1,0 +1,48 @@
+<div class="col py-3">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Username</th>
+                <th scope="col">Password</th>
+                <th scope="col">Privilege</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% console.log(userList); %>
+            <% for(let u of Object.keys(userList)) { %> 
+                <tr>
+                    <th> <%= userList[u].id %> </th>
+                    <th> <%= userList[u].username %> </th>
+                    <th> <%= userList[u].password %> </th>
+                    <th> <%= userList[u].privilege %> </th>
+                    <th> 
+                        <% if(userList[u].privilege != 'admin') { %>
+                            <a href="/removeAccount/<%= userList[u].username %>" class="btn btn-danger">Remove</a>
+                        <% } %>
+                    </th>
+                </tr>
+            <% } %>
+            <tr>
+                <form action="/createAccount" enctype="multipart/form-data" method="post">
+                    <th> 
+                        <input class="form-control" type="text" placeholder="#" disabled>
+                    </th>
+                    <th> 
+                        <input name="username" class="form-control" type="text" placeholder="Username">
+                    </th>
+                    <th> 
+                        <input name="password" class="form-control" type="text" placeholder="Password">
+                    </th>
+                    <th> 
+                        <input class="form-control" type="text" placeholder="user" disabled>
+                    </th>
+                    <th> 
+                        <input type="submit" value="Add" class="btn btn-success"/>
+                    </th>
+                </form>
+            </tr>
+        </tbody>
+    </table>
+</div>

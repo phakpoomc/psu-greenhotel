@@ -1,0 +1,103 @@
+<p>
+    <% let sub = data[subname].sub; %>
+
+    <h1> <%= data[subname].desc %> </h1>
+    <div id="<%= subname %>">
+        <% for(let element in sub) {%>
+            <p>
+                <div id="<%= element %>">
+
+                    <h3> <%= Array.isArray(sub[element].desc) ? sub[element].desc[0] : sub[element].desc %> </h3>
+                    <% if(sub[element].list != null) { %> 
+                        <ol>
+                            <% for(let l of sub[element].list) { %> 
+                                <li> <%= l %> </li>
+                            <% } %>
+                        </ol>
+                    <% } %>
+
+                    <% if(sub[element].sub != null) { %>
+                        <% for(let e in sub[element].sub) { %> 
+                            <div class="row g-3 align-items-center custom-sub-form">
+                                <div class="col-auto">
+                            <% if(sub[element].sub[e].type == "text") { %> 
+                                <%= sub[element].sub[e].desc[0] %> <b> <%= forms[e] %> </b>
+                                <span class="form-text">
+                                    <%= sub[element].sub[e].desc[1] %> 
+                                </span>
+                                <br>
+                                <div class="custom-sub-form"> <b> Comments: </b> <br> </div>
+                                <p class="custom-sub-form text-danger"><b> <%= result[e] %> </b><br></p>
+
+                            <% } %>
+                            <% if(sub[element].sub[e].type == "file") { %> 
+                                <%= sub[element].sub[e].desc[0] %> <br>
+                                <% if(sub[element].sub[e].list != null) { %> 
+                                    <ul>
+                                    <% for(let l of sub[element].sub[e].list) { %> 
+                                        <li> <%= l %> </li>
+                                    <% } %>
+                                    </ul>
+                                <% } %>
+                                <label for="<%= e %>" class="form-label"><b><%= sub[element].sub[e].desc[1] %></b> </label>
+                                <br>
+                                <% if(Array.isArray(forms[e])) { %> 
+                                    <% for(let img of forms[e]) { %> 
+                                        <img src="<%= img.path+'?hash='+img.hash %>" class="img-fluid">
+                                    <% } %>
+                                <% } else { %>
+                                    <% if(forms[e].path != '') { %> 
+                                        <img src="<%= forms[e].path+'?hash='+forms[e].hash %>" class="img-fluid">
+                                    <% } %>
+                                <% } %>
+                                <br>
+                                <div class="custom-sub-form"> <b> Comments: </b> <br> </div>
+                                <p class="custom-sub-form text-danger"><b> <%= result[e] %> </b><br></p>
+                            <% } %>
+                                </div>
+                            </div>
+                        <% } %>
+
+                    <% } %>
+                    <% if(sub[element].type == "file") { %> 
+                        <div class="row g-3 align-items-center custom-sub-form">
+                            <div class="col-auto">
+                                <label for="<%= element %>" class="form-label"><b><%= sub[element].desc[1] %></b> </label>
+                                <br>
+                                <% if(Array.isArray(forms[element])) { %> 
+                                    <% for(let img of forms[element]) { %> 
+                                        <img src="<%= '/'+img.path+'?hash='+img.hash %>" class="img-fluid"> <br>
+                                    <% } %>
+                                <% } else if(forms[element].path != ''){ %>
+                                    <img src="<%= '/'+forms[element].path+'?hash='+forms[element].hash %>" class="img-fluid"> <br>
+                                
+                                <% } %>
+                                <br>
+                                <div class="custom-sub-form"> <b> Comments: </b> <br> </div>
+                                <p class="custom-sub-form text-danger"><b> <%= result[element] %> </b><br></p>
+
+                            </div>
+                        </div>
+                    <% } %>
+                    <% if(sub[element].type == "text") { %> 
+                        <div class="row g-3 align-items-center custom-sub-form">
+                            <div class="col-auto">
+                            <label for="<%= element %>" class="col-form-label"><%= sub[element].desc[1] %></label>
+                            </div>
+                            <div class="col-auto">
+                            <input type="number" name="<%= element %>" class="form-control">
+                            </div>
+                            <div class="col-auto">
+                            <span class="form-text">
+                                <%= sub[element].desc[2] %>
+                            </span>
+                            </div>
+                        </div>
+                    <% } %>
+
+                </div>
+            </p>
+
+        <% } %>
+    </div>
+</p>

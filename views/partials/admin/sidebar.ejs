@@ -1,0 +1,76 @@
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+            <div class="overflow-auto sticky-top sticky-offset d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white" style="height:calc(100vh - 50px);">
+                <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                    <span class="fs-5 d-none d-sm-inline">Menu</span>
+                </a>
+                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link align-middle px-0">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/createAccount" class="nav-link align-middle px-0">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">สร้างผู้ใช้งานใหม่</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                             <span class="ms-1 d-none d-sm-inline">ฟอร์มทั้งหมด</span> </a>
+                        <ul class="collapse nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
+                            
+                            <% for (let username of Object.keys(sidebarList)) { %>
+                                <% if(sidebarList[username] == true) { %>
+                                    <li class="w-100">
+                                        <a href="/adminform/<%= username %>" class="nav-link px-0"> <span class="d-none d-sm-inline"><%= username %></span> </a>
+                                    </li>
+                                <% } %>
+                            <% } %>
+                          
+                        </ul>
+                    </li>
+                    
+                </ul>
+
+                <div class="dropdown pb-4">
+                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="<%= profilepic %>" alt="hugenerd" width="30" height="30" class="rounded-circle">
+                        <span class="d-none d-sm-inline mx-1"><%= name %></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                        <li><a class="dropdown-item" href="/loginform">Sign out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <% if(showUser != null) { %> 
+            <% if(showUser != -1) { %> 
+                <form action="/submit/<%= showUser %>" enctype="multipart/form-data" method="post">
+                    <div class="col py-3">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <% for (let i = 1; i <= 10; i++) { %>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link <%= (i==1)? "active": "" %>" id="i<%= String(i) %>-tab" data-bs-toggle="tab" data-bs-target="#i<%= String(i) %>-tab-pane" type="button" role="tab" aria-controls="i<%= String(i) %>-tab-pane" aria-selected="true" <%= (i>6) ? "disabled": "" %>>หมวดที่ <%= String(i) %></button>
+                                </li>
+                            <% } %>
+                            
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <% for (let i = 1; i <= 10; i++) { %>
+                                <div class="tab-pane fade <%= (i==1)? "show active": "" %>" id="i<%= String(i) %>-tab-pane" role="tabpanel" aria-labelledby="i<%= String(i) %>-tab" tabindex="0"><%- include('form', {subname: "index"+String(i)}); %></div>
+                            <% } %>
+                            
+                        </div>
+                    </div>
+
+                    <input type="submit" value="ส่งฟอร์ม" class="btn btn-primary"/>
+                </form>
+            <% } else { %>
+                <%- include('table'); %>
+            <% } %>
+        <% } %>
+    </div>
+</div>
