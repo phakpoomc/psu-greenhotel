@@ -43,7 +43,7 @@
                                 <br>
                                 <% if(Array.isArray(forms[e])) { %> 
                                     <% for(let img of forms[e]) { %> 
-                                        <img src="<%= img.path+'?hash='+img.hash %>" class="img-fluid">
+                                        <img src="/psu-demo/<%= img.path+'?hash='+img.hash %>" class="img-fluid">
                                     <% } %>
                                 <% } else { %>
                                     <% if(forms[e].path != '') { %> 
@@ -66,10 +66,10 @@
                                 <br>
                                 <% if(Array.isArray(forms[element])) { %> 
                                     <% for(let img of forms[element]) { %> 
-                                        <img src="<%= '/'+img.path+'?hash='+img.hash %>" class="img-fluid"> <br>
+                                        <img src="<%= '/psu-demo/'+img.path+'?hash='+img.hash %>" class="img-fluid"> <br>
                                     <% } %>
                                 <% } else if(forms[element].path != ''){ %>
-                                    <img src="<%= '/'+forms[element].path+'?hash='+forms[element].hash %>" class="img-fluid"> <br>
+                                    <img src="<%= '/psu-demo/'+forms[element].path+'?hash='+forms[element].hash %>" class="img-fluid"> <br>
                                 
                                 <% } %>
                                 Comments: <br>

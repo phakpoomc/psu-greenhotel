@@ -7,7 +7,7 @@
                 </a>
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li class="nav-item">
-                        <a href="/" class="nav-link align-middle px-0">
+                        <a href="/psu-demo/" class="nav-link align-middle px-0">
                             <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Home</span>
                         </a>
                     </li>
@@ -16,10 +16,10 @@
                              <span class="ms-1 d-none d-sm-inline">ฟอร์ม</span> </a>
                         <ul class="collapse nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
                             <li class="w-100">
-                                <a href="/userform" class="nav-link px-0"> <span class="d-none d-sm-inline">กรอกฟอร์ม</span> </a>
+                                <a href="/psu-demo/userform" class="nav-link px-0"> <span class="d-none d-sm-inline">กรอกฟอร์ม</span> </a>
                             </li>
                             <li>
-                                <a href="/userresult" class="nav-link px-0"> <span class="d-none d-sm-inline">ผลการประเมิน</span> </a>
+                                <a href="/psu-demo/userresult" class="nav-link px-0"> <span class="d-none d-sm-inline">ผลการประเมิน</span> </a>
                             </li>
                         </ul>
                     </li>
@@ -32,7 +32,7 @@
                         <span class="d-none d-sm-inline mx-1"><%= name %></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                        <li><a class="dropdown-item" href="/loginform">Sign out</a></li>
+                        <li><a class="dropdown-item" href="/psu-demo/loginform">Sign out</a></li>
                     </ul>
                 </div>
             </div>
@@ -40,7 +40,7 @@
 
         <% if(result == null) { %>  
             <% console.log("Result = null"); %>
-            <form action="/submit" enctype="multipart/form-data" method="post">
+            <form action="/psu-demo/submit" enctype="multipart/form-data" method="post">
                 <div class="col py-3">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <% for (let i = 1; i <= 10; i++) { %>

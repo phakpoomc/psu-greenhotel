@@ -7,12 +7,12 @@
                 </a>
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li class="nav-item">
-                        <a href="/" class="nav-link align-middle px-0">
+                        <a href="/psu-demo/" class="nav-link align-middle px-0">
                             <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Home</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/createAccount" class="nav-link align-middle px-0">
+                        <a href="/psu-demo/createAccount" class="nav-link align-middle px-0">
                             <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">สร้างผู้ใช้งานใหม่</span>
                         </a>
                     </li>
@@ -24,7 +24,7 @@
                             <% for (let username of Object.keys(sidebarList)) { %>
                                 <% if(sidebarList[username] == true) { %>
                                     <li class="w-100">
-                                        <a href="/adminform/<%= username %>" class="nav-link px-0"> <span class="d-none d-sm-inline"><%= username %></span> </a>
+                                        <a href="/psu-demo/adminform/<%= username %>" class="nav-link px-0"> <span class="d-none d-sm-inline"><%= username %></span> </a>
                                     </li>
                                 <% } %>
                             <% } %>
@@ -40,7 +40,7 @@
                         <span class="d-none d-sm-inline mx-1"><%= name %></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                        <li><a class="dropdown-item" href="/loginform">Sign out</a></li>
+                        <li><a class="dropdown-item" href="/psu-demo/loginform">Sign out</a></li>
                     </ul>
                 </div>
             </div>
@@ -48,7 +48,7 @@
 
         <% if(showUser != null) { %> 
             <% if(showUser != -1) { %> 
-                <form action="/submit/<%= showUser %>" enctype="multipart/form-data" method="post">
+                <form action="/psu-demo/submit/<%= showUser %>" enctype="multipart/form-data" method="post">
                     <div class="col py-3">
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <% for (let i = 1; i <= 10; i++) { %>
