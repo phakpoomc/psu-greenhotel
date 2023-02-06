@@ -19,13 +19,13 @@
                     <th> <%= userList[u].privilege %> </th>
                     <th> 
                         <% if(userList[u].privilege != 'admin') { %>
-                            <a href="/psu-demo/removeAccount/<%= userList[u].username %>" class="btn btn-danger">Remove</a>
+                            <a href="<%= rootpath %>removeAccount/<%= userList[u].username %>" class="btn btn-danger">Remove</a>
                         <% } %>
                     </th>
                 </tr>
             <% } %>
             <tr>
-                <form action="/psu-demo/createAccount" enctype="multipart/form-data" method="post">
+                <form action="<%= rootpath %>createAccount" enctype="multipart/form-data" method="post">
                     <th> 
                         <input class="form-control" type="text" placeholder="#" disabled>
                     </th>

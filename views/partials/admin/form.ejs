@@ -1,58 +1,119 @@
 <p>
     <% let sub = data[subname].sub; %>
 
-    <h1> <%= data[subname].desc %> </h1>
+    <h1> <%- data[subname].desc %> </h1>
     <div id="<%= subname %>">
         <% for(let element in sub) {%>
             <p>
                 <div id="<%= element %>">
 
-                    <h3> <%= Array.isArray(sub[element].desc) ? sub[element].desc[0] : sub[element].desc %> </h3>
+                    <h3> <%- Array.isArray(sub[element].desc) ? sub[element].desc[0] : sub[element].desc %> </h3>
                     <% if(sub[element].list != null) { %> 
                         <ol>
                             <% for(let l of sub[element].list) { %> 
                                 <li> <%= l %> </li>
                             <% } %>
                         </ol>
+                    <% } else if(sub[element].checkbox != null) { %>
+                        <% for(let c in sub[element].checkbox) { %> 
+                            <div class="input-group mb-3">
+                                <div class="input-group-text">
+                                    <input name="<%= c %>" class="form-check-input mt-0" type="checkbox" value="true" aria-label="Checkbox for following text" <%= (forms[c]=="true") ? "checked": "" %> disalbed>
+                                </div>
+                                <%= sub[element].checkbox[c].desc %>
+                            </div>
+                        <% } %>
                     <% } %>
 
                     <% if(sub[element].sub != null) { %>
                         <% for(let e in sub[element].sub) { %> 
                             <div class="row g-3 align-items-center custom-sub-form">
                                 <div class="col-auto">
+                            <% if(sub[element].sub[e].type == "subheader") { %> 
+                                <h5> <%= sub[element].sub[e].desc %> </h5>
+                                <% for(let ee in sub[element].sub[e].sub) { %> 
+                                    <% if(sub[element].sub[e].sub[ee].type == "file") { %> 
+                                        <%- sub[element].sub[e].sub[ee].desc[0] %> <br>
+                                        <% if(sub[element].sub[e].sub[ee].list != null) { %> 
+                                            <ul>
+                                            <% for(let l of sub[element].sub[e].sub[ee].list) { %> 
+                                                <li> <%= l %> </li>
+                                            <% } %>
+                                            </ul>
+                                        <% } else if(sub[element].sub[e].sub[ee].checkbox != null) { %>
+                                            <% for(let c in sub[element].sub[e].sub[ee].checkbox) { %> 
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-text">
+                                                        <input name="<%= c %>" class="form-check-input mt-0" type="checkbox" value="true" aria-label="Checkbox for following text" <%= (forms[c]=="true") ? "checked": "" %> disalbed>
+                                                    </div>
+                                                    <%= sub[element].sub[e].sub[ee].checkbox[c].desc %>
+                                                </div>
+                                            <% } %>
+                                        <% } %>
+                                        <label for="<%= ee %>" class="form-label"><b><%- sub[element].sub[e].sub[ee].desc[1] %></b> </label>
+                                        <br>
+                                        <% if(Array.isArray(forms[ee])) { %> 
+                                            <% for(let img of forms[ee]) { %> 
+                                                <%- include(process.cwd() + '/views/partials/displayfile.ejs', {fileinfo: img}); %>
+                                                
+                                            <% } %>
+                                        <% } else { %>
+                                            <% if(forms[ee] && forms[ee].path != '') { %> 
+                                                <%- include(process.cwd() + '/views/partials/displayfile.ejs', {fileinfo: forms[ee]}); %>
+                                            <% } %>
+                                        <% } %>
+        
+                                        <label for="<%= ee %>">Comments:</label>
+                                        <textarea class="form-control" name="<%= ee %>" rows="3" cols="100"></textarea>
+                                        <br>
+                                    <% } %>
+                                        
+                                <% } %>
+                            <% } %>
                             <% if(sub[element].sub[e].type == "text") { %> 
-                                <%= sub[element].sub[e].desc[0] %> <b> <%= forms[e] %> </b>
+                                <%- sub[element].sub[e].desc[0] %> <b> <%= forms[e] %> </b>
                                 <span class="form-text">
-                                    <%= sub[element].sub[e].desc[1] %> 
+                                    <%- sub[element].sub[e].desc[1] %> 
                                 </span>
                                 <br>
                                 <label for="<%= e %>">Comments:</label>
                                 <textarea class="form-control" name="<%= e %>" rows="3" cols="100"></textarea>
+                                <br>
                                 
                             <% } %>
                             <% if(sub[element].sub[e].type == "file") { %> 
-                                <%= sub[element].sub[e].desc[0] %> <br>
+                                <%- sub[element].sub[e].desc[0] %> <br>
                                 <% if(sub[element].sub[e].list != null) { %> 
                                     <ul>
                                     <% for(let l of sub[element].sub[e].list) { %> 
                                         <li> <%= l %> </li>
                                     <% } %>
                                     </ul>
+                                <% } else if(sub[element].sub[e].checkbox != null) { %>
+                                    <% for(let c in sub[element].sub[e].checkbox) { %> 
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-text">
+                                                <input name="<%= c %>" class="form-check-input mt-0" type="checkbox" value="true" aria-label="Checkbox for following text" <%= (forms[c]=="true") ? "checked": "" %> disalbed>
+                                            </div>
+                                            <%= sub[element].sub[e].checkbox[c].desc %>
+                                        </div>
+                                    <% } %>
                                 <% } %>
-                                <label for="<%= e %>" class="form-label"><b><%= sub[element].sub[e].desc[1] %></b> </label>
+                                <label for="<%= e %>" class="form-label"><b><%- sub[element].sub[e].desc[1] %></b> </label>
                                 <br>
                                 <% if(Array.isArray(forms[e])) { %> 
                                     <% for(let img of forms[e]) { %> 
-                                        <img src="/psu-demo/<%= img.path+'?hash='+img.hash %>" class="img-fluid">
+                                        <%- include(process.cwd() + '/views/partials/displayfile.ejs', {fileinfo: img}); %>
                                     <% } %>
                                 <% } else { %>
-                                    <% if(forms[e].path != '') { %> 
-                                        <img src="<%= forms[e].path+'?hash='+forms[e].hash %>" class="img-fluid">
+                                    <% if(forms[e] && forms[e].path != '') { %> 
+                                        <%- include(process.cwd() + '/views/partials/displayfile.ejs', {fileinfo: forms[e]}); %>
                                     <% } %>
                                 <% } %>
 
                                 <label for="<%= e %>">Comments:</label>
                                 <textarea class="form-control" name="<%= e %>" rows="3" cols="100"></textarea>
+                                <br>
                             <% } %>
                                 </div>
                             </div>
@@ -62,33 +123,32 @@
                     <% if(sub[element].type == "file") { %> 
                         <div class="row g-3 align-items-center custom-sub-form">
                             <div class="col-auto">
-                                <label for="<%= element %>" class="form-label"><b><%= sub[element].desc[1] %></b> </label>
+                                <label for="<%= element %>" class="form-label"><b><%- sub[element].desc[1] %></b> </label>
                                 <br>
                                 <% if(Array.isArray(forms[element])) { %> 
                                     <% for(let img of forms[element]) { %> 
-                                        <img src="<%= '/psu-demo/'+img.path+'?hash='+img.hash %>" class="img-fluid"> <br>
+                                        <%- include(process.cwd() + '/views/partials/displayfile.ejs', {fileinfo: img}); %>
                                     <% } %>
                                 <% } else if(forms[element].path != ''){ %>
-                                    <img src="<%= '/psu-demo/'+forms[element].path+'?hash='+forms[element].hash %>" class="img-fluid"> <br>
-                                
+                                    <%- include(process.cwd() + '/views/partials/displayfile.ejs', {fileinfo: forms[element]}); %>
                                 <% } %>
                                 Comments: <br>
                                 <textarea class="form-control" name="<%= element %>" rows="3" cols="100"></textarea>
-
+                                <br>
                             </div>
                         </div>
                     <% } %>
                     <% if(sub[element].type == "text") { %> 
                         <div class="row g-3 align-items-center custom-sub-form">
                             <div class="col-auto">
-                            <label for="<%= element %>" class="col-form-label"><%= sub[element].desc[1] %></label>
+                            <label for="<%= element %>" class="col-form-label"><%- sub[element].desc[1] %></label>
                             </div>
                             <div class="col-auto">
                             <input type="number" name="<%= element %>" class="form-control">
                             </div>
                             <div class="col-auto">
                             <span class="form-text">
-                                <%= sub[element].desc[2] %>
+                                <%- sub[element].desc[2] %>
                             </span>
                             </div>
                         </div>

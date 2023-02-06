@@ -6,7 +6,15 @@
 
     <body>
         <%- include('../partials/navbar'); %>
-        <%- include('../partials/banner'); %>
+        <%- include('../partials/banner', {
+            coaching: coaching,
+            workshop: workshop,
+            fieldtrip: fieldtrip,
+            openning: openning,
+            certificate: certificate,
+            training: training,
+            rootpath: rootpath
+        }); %>
  
         <%- include('../partials/home', {
             coaching: coaching,
@@ -14,7 +22,8 @@
             fieldtrip: fieldtrip,
             openning: openning,
             certificate: certificate,
-            training: training
+            training: training,
+            rootpath: rootpath
         }); %>
 
     </body>

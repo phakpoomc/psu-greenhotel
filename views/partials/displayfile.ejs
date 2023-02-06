@@ -1,0 +1,22 @@
+<% let doctype = ["application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/vnd.oasis.opendocument.text", "application/vnd.oasis.opendocument.spreadsheet"] %>
+
+<% if(fileinfo["mime-type"] == "image/jpeg" || fileinfo["mime-type"] == "image/png") { %> 
+    <img src="<%= rootpath + fileinfo.path+'?hash='+fileinfo.hash %>" class="img-fluid">
+    <br>
+    <a href="<%= rootpath + fileinfo.path+'?hash='+fileinfo.hash %>" download>Download <%= rootpath + fileinfo.path %></a>
+    <br>
+<% } else if(fileinfo["mime-type"] == "application/pdf") { %>
+    <iframe src="<%= rootpath + fileinfo.path+'?hash='+fileinfo.hash %>" width="100%" height="600px">
+    </iframe>
+    <br>
+    <a href="<%= rootpath + fileinfo.path+'?hash='+fileinfo.hash %>" download>Download <%= rootpath + fileinfo.path %></a>
+    <br>
+<% } else if(doctype.includes(fileinfo["mime-type"])) { %>
+    <iframe src='https://view.officeapps.live.com/op/embed.aspx?src=https://se-sskru.com/<%=rootpath + fileinfo.path%>' width='100%' height='650px' frameborder='0'></iframe>
+    <br>
+    <a href="<%= rootpath + fileinfo.path+'?hash='+fileinfo.hash %>" download> Download <%= rootpath + fileinfo.path %></a>
+    <br>
+<% } else { %>
+    <a href="<%= rootpath + fileinfo.path+'?hash='+fileinfo.hash %>" download>Download <%= rootpath + fileinfo.path %></a>
+    <br>
+<% } %>

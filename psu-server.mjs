@@ -13,8 +13,11 @@ var data = await db.getData('/');
 var currentID = data.currentID || 0;
 
 var rootdir = process.cwd();
+var rootpath = "/"; //"/psu-demo/"
 
 var jsonForm = "";
+
+
 
 fs.readFile('standardindex.json', 'utf8', (err, data) => {
     if (err) throw err;
@@ -72,7 +75,8 @@ app.get('/', (req, res) => {
         fieldtrip: fieldtrip,
         openning: openning,
         certificate: certificate,
-        training: training
+        training: training,
+        rootpath: rootpath
     });
 });
 
@@ -80,12 +84,12 @@ app.get('/loginform', (req, res) => {
     console.log(req.session.userid);
     if(req.session.userid == null)
     {
-        res.render('./pages/login');
+        res.render('./pages/login', {rootpath: rootpath});
     }
     else
     {
         req.session.destroy();
-        res.redirect("/psu-demo/");
+        res.redirect(rootpath);
     }
 });
 
@@ -111,7 +115,7 @@ app.post('/login', async (req, res) => {
             req.session.privilege = users[ID].info.privilege;
             req.session.save();
             
-            res.redirect('/psu-demo/userform');
+            res.redirect(rootpath+'userform');
         }
         else
         {
@@ -141,11 +145,11 @@ app.get('/createAccount', async (req, res) => {
             forms[users[user].info.username] = users[user].info;
         }
 
-        res.render('./pages/adminform.ejs', {username: session.userid, sidebarList: sidebarList, userList: forms, showUser: -1});
+        res.render('./pages/adminform.ejs', {username: session.userid, sidebarList: sidebarList, userList: forms, showUser: -1, rootpath: rootpath});
     }
     else
     {
-        res.redirect('/psu-demo/');
+        res.redirect(rootpath);
     }
 });
 
@@ -157,11 +161,11 @@ app.get('/removeAccount/:username', async (req, res) => {
     {
         await db.delete('/users/' + req.params.username);
 
-        res.redirect('/psu-demo/createAccount');
+        res.redirect(rootpath+'createAccount');
     }
     else
     {
-        res.redirect("/psu-demo/");
+        res.redirect(rootpath);
     }
 });
 
@@ -184,12 +188,12 @@ app.post('/createAccount', async (req, res, next) => {
 
             console.log(username, password);
 
-            res.redirect('/psu-demo/createAccount');
+            res.redirect(rootpath+'createAccount');
         });
     }
     else
     {
-        res.redirect("/psu-demo/");
+        res.redirect(rootpath);
     }
 });
 
@@ -200,16 +204,16 @@ app.get('/userform', async (req, res) => {
     {
         if(session.privilege == "admin")
         {
-            res.redirect('/psu-demo/adminform');
+            res.redirect(rootpath+'adminform');
         }
         else
         {
-            res.render('./pages/userform.ejs', {username: session.userid, data: jsonForm, result: null});
+            res.render('./pages/userform.ejs', {username: session.userid, data: jsonForm, result: null, rootpath: rootpath});
         }
     }
     else
     {
-        res.redirect('/psu-demo/loginform');
+        res.redirect(rootpath+'loginform');
     }    
 });
 
@@ -220,7 +224,7 @@ app.get('/userresult', async (req, res) => {
     {
         if(session.privilege == "admin")
         {
-            res.redirect('/psu-demo/adminform');
+            res.redirect(rootpath+'adminform');
         }
         else
         {
@@ -228,7 +232,7 @@ app.get('/userresult', async (req, res) => {
 
             if(data['result'] != null)
             {
-                res.render('./pages/userform.ejs', {username: session.userid, data: jsonForm, forms: data['form'], result: data['result']});
+                res.render('./pages/userform.ejs', {username: session.userid, data: jsonForm, forms: data['form'], result: data['result'], rootpath: rootpath});
             }
             else
             {
@@ -239,7 +243,7 @@ app.get('/userresult', async (req, res) => {
     }
     else
     {
-        res.redirect('/psu-demo/loginform');
+        res.redirect(rootpath+'loginform');
     }  
 });
 
@@ -259,11 +263,11 @@ app.get('/adminform', async (req, res) => {
             }
         }
 
-        res.render('./pages/adminform.ejs', {username: session.userid, sidebarList: sidebarList, data: jsonForm, showUser: null});
+        res.render('./pages/adminform.ejs', {username: session.userid, sidebarList: sidebarList, data: jsonForm, showUser: null, rootpath: rootpath});
     }
     else
     {
-        res.redirect('/psu-demo/');
+        res.redirect(rootpath);
     }
 });
 
@@ -288,22 +292,22 @@ app.get('/adminform/:userid', async (req, res) => {
         {
             if(users[req.params.userid]['form'] != null)
             {
-                res.render('./pages/adminform.ejs', {username: session.userid, sidebarList: sidebarList, forms: users[req.params.userid]['form'], data: jsonForm, showUser: req.params.userid});
+                res.render('./pages/adminform.ejs', {username: session.userid, sidebarList: sidebarList, forms: users[req.params.userid]['form'], data: jsonForm, showUser: req.params.userid, rootpath: rootpath});
             }
             else
             {
-                res.redirect('/psu-demo/adminform');
+                res.redirect(rootpath+'adminform');
             }
         }
         else
         {
-            res.redirect('/psu-demo/adminform');
+            res.redirect(rootpath+'adminform');
         }
         
     }
     else
     {
-        res.redirect('/psu-demo/');
+        res.redirect(rootpath);
     }
 });
 
@@ -343,7 +347,7 @@ app.post('/submit/:username', async (req, res, next) => {
 
         data = await db.getData('/');
 
-        res.redirect('/psu-demo/adminform');
+        res.redirect(rootpath+'adminform');
     });
 });
 
@@ -420,7 +424,7 @@ app.post('/submit', async (req, res, next) => {
 
     data = await db.getData('/');
 
-    res.redirect('/psu-demo/userform');
+    res.redirect(rootpath+'userform');
   });
 });
 
