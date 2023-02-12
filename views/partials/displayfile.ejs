@@ -6,7 +6,7 @@
     <a href="<%= rootpath + fileinfo.path+'?hash='+fileinfo.hash %>" download>Download <%= rootpath + fileinfo.path %></a>
     <br>
 <% } else if(fileinfo["mime-type"] == "application/pdf") { %>
-    <iframe src="<%= rootpath + fileinfo.path+'?hash='+fileinfo.hash %>" width="100%" height="600px">
+    <iframe src="<%= rootpath + fileinfo.path+'?hash='+fileinfo.hash %>" style="width: 100%; height: 600px; border: 1px">
     </iframe>
     <br>
     <a href="<%= rootpath + fileinfo.path+'?hash='+fileinfo.hash %>" download>Download <%= rootpath + fileinfo.path %></a>

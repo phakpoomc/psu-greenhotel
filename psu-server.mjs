@@ -473,26 +473,69 @@ app.get('/img/:subfolder/:imgname', (req, res) => {
 })
 
 app.get('/uploads/:username/:index/:imgname', (req, res) => {
-    var contentType = "";
+    let contentType = "";
+    let xfo = "SAMEORIGIN";
 
-    if(req.params.imgname.split('.').pop() == 'jpg' || req.params.imgname.split('.').pop() == 'jpeg')
+    let fileExt = req.params.imgname.split('.').pop();
+
+    if(fileExt == 'jpg' || fileExt == 'jpeg')
     {
         contentType = 'image/jpeg';
     }
-    else if(req.params.imgname.split('.').pop() == 'png')
+    else if(fileExt == 'png')
     {
         contentType = 'image/png';
     }
+    else if(fileExt == 'pdf')
+    {
+        contentType = 'application/pdf';
+    }
+    else if(fileExt == 'doc')
+    {
+        contentType = 'application/msword';
+    }
+    else if(fileExt == 'docx')
+    {
+        contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+    }
+    else if(fileExt == 'odt')
+    {
+        contentType = 'application/vnd.oasis.opendocument.text';
+    }
+    else if(fileExt == 'xls')
+    {
+        contentType = 'application/vnd.ms-excel';
+    }
+    else if(fileExt == 'xlsx')
+    {
+        contentType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    }
+    else if(fileExt == 'ods')
+    {
+        contentType = 'application/vnd.oasis.opendocument.spreadsheet';
+    }
+    else if(fileExt == 'ppt')
+    {
+        contentType = 'application/vnd.ms-powerpoint';
+    }
+    else if(fileExt == 'pptx')
+    {
+        contentType = 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+    }
+    else if(fileExt == 'odp')
+    {
+        contentType = 'application/vnd.oasis.opendocument.presentation';
+    }
     else
     {
-        // NEED FIX
-        contentType = 'image/png';
+        contentType = 'application/octet-stream';
     }
 
     let options = {
         root: rootdir,
         headers: {
-            'Content-Type': contentType
+            'Content-Type': contentType,
+            'X-Frame-Options': xfo
         }
     };
 
