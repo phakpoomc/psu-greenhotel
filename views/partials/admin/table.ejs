@@ -1,4 +1,7 @@
 <div class="col py-3">
+    <div class="alert alert-warning">
+        <strong>Warning!</strong> User ID ต้องยาวมากกว่า 4 อักษร และ Password ต้องยาวมากกว่า 6 อักษร และต้องใช้แค่ตัวอักษร ตัวเลข หรือ underscore 
+    </div>
     <table class="table table-striped table-hover">
         <thead>
             <tr>
@@ -13,15 +16,22 @@
             <% console.log(userList); %>
             <% for(let u of Object.keys(userList)) { %> 
                 <tr>
-                    <th> <%= userList[u].id %> </th>
-                    <th> <%= userList[u].username %> </th>
-                    <th> <%= userList[u].password %> </th>
-                    <th> <%= userList[u].privilege %> </th>
-                    <th> 
-                        <% if(userList[u].privilege != 'admin') { %>
-                            <a href="<%= rootpath %>removeAccount/<%= userList[u].username %>" class="btn btn-danger">Remove</a>
-                        <% } %>
-                    </th>
+                    <form action="<%= rootpath %>updatePassword" enctype="multipart/form-data" method="post">
+                        <th> <%= userList[u].id %> </th>
+                        <th> <%= userList[u].username %> </th>
+                        <th>
+                            <input name="username" type="hidden" value="<%= userList[u].username %>">
+                            <input name="password" class="form-control" type="text" placeholder="Password" value="<%= userList[u].password %>">
+                        </th>
+                        <th> <%= userList[u].privilege %> </th>
+                        <th> 
+                            <input type="submit" value="Update Password" class="btn btn-success"/>
+                            <% if(userList[u].privilege != 'admin') { %>
+                                <a href="<%= rootpath %>removeAccount/<%= userList[u].username %>" class="btn btn-danger">Remove</a>
+                            <% } %>
+
+                        </th>
+                    </form>
                 </tr>
             <% } %>
             <tr>

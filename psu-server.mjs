@@ -81,7 +81,6 @@ app.get('/', (req, res) => {
 });
 
 app.get('/loginform', (req, res) => {
-    console.log(req.session.userid);
     if(req.session.userid == null)
     {
         res.render('./pages/login', {rootpath: rootpath});
@@ -107,8 +106,6 @@ app.post('/login', async (req, res) => {
         let ID = fields.id;
         let password = fields.password;
 
-        console.log(users);
-
         if(users.hasOwnProperty(ID) && password == users[ID].info.password)
         {
             req.session.userid = users[ID].info.username;
@@ -121,8 +118,6 @@ app.post('/login', async (req, res) => {
         {
             res.send("Invalid username or password");
         }
-
-        console.log(ID, password);
     });
 });
 
@@ -146,6 +141,34 @@ app.get('/createAccount', async (req, res) => {
         }
 
         res.render('./pages/adminform.ejs', {username: session.userid, sidebarList: sidebarList, userList: forms, showUser: -1, rootpath: rootpath});
+    }
+    else
+    {
+        res.redirect(rootpath);
+    }
+});
+
+app.post('/updatePassword', async (req, res) => {
+    let session = req.session;
+
+    if(session.userid != null && session.privilege == "admin")
+    {
+        const form = new formidable.IncomingForm();
+  
+        form.parse(req, async (err, fields, files) => {
+            if (err) {
+                next(err);
+                return;
+            }
+
+            let username = fields.username;
+            let password = fields.password;
+
+            await db.push('/users/' + username + '/info/password', password, false);
+            res.redirect(rootpath + 'createAccount');
+        });
+
+
     }
     else
     {
@@ -182,13 +205,20 @@ app.post('/createAccount', async (req, res, next) => {
 
             let username = fields.username;
             let password = fields.password;
+            let pattern = /\w*/;
 
-            await db.push('/users/' + username + '/info', {"username": username, "password": password, "id": ++currentID, "privilege": "user"}, false);
-            await db.push('/currentID', currentID);
+            if(username && username.length > 4 && pattern.test(username) && password && password.length > 6 && pattern.test(password))
+            {
+                await db.push('/users/' + username + '/info', {"username": username, "password": password, "id": ++currentID, "privilege": "user"}, false);
+                await db.push('/currentID', currentID);
 
-            console.log(username, password);
-
-            res.redirect(rootpath+'createAccount');
+                res.redirect(rootpath+'createAccount');
+            }
+            else
+            {
+                res.redirect(rootpath+'createAccount');
+            }
+            
         });
     }
     else
@@ -208,7 +238,16 @@ app.get('/userform', async (req, res) => {
         }
         else
         {
-            res.render('./pages/userform.ejs', {username: session.userid, data: jsonForm, result: null, rootpath: rootpath});
+            let data = await db.getData('/users/' + session.userid);
+
+            if(data['form'] == null)
+            {
+                res.render('./pages/userform.ejs', {username: session.userid, data: jsonForm, result: null, rootpath: rootpath, submit: false});
+            }
+            else
+            {
+                res.render('./pages/userform.ejs', {username: session.userid, data: jsonForm, result: null, rootpath: rootpath, submit: true});
+            }
         }
     }
     else
@@ -349,6 +388,29 @@ app.post('/submit/:username', async (req, res, next) => {
 
         res.redirect(rootpath+'adminform');
     });
+});
+
+app.post('/resubmit', async (req, res, next) => {
+    if(req.session.userid == null)
+    {
+        res.send("Your session expired. Login and retry.");
+    }
+    else
+    {
+        if(req.session.privilege == "admin")
+        {
+            res.redirect(rootpath+'adminform');
+        }
+        else
+        {
+            await db.delete('/users/' + req.session.userid + '/form');
+            await db.delete('/users/' + req.session.userid + '/result');
+
+            res.redirect(rootpath + 'userform');
+        }
+    }
+    
+    
 });
 
 app.post('/submit', async (req, res, next) => {
