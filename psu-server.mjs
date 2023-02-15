@@ -331,7 +331,14 @@ app.get('/adminform/:userid', async (req, res) => {
         {
             if(users[req.params.userid]['form'] != null)
             {
-                res.render('./pages/adminform.ejs', {username: session.userid, sidebarList: sidebarList, forms: users[req.params.userid]['form'], data: jsonForm, showUser: req.params.userid, rootpath: rootpath});
+                let formChecked = false;
+
+                if(users[req.params.userid]['result'] != null)
+                {
+                    formChecked = true;
+                }
+
+                res.render('./pages/adminform.ejs', {username: session.userid, sidebarList: sidebarList, forms: users[req.params.userid]['form'], data: jsonForm, showUser: req.params.userid, checked: formChecked, rootpath: rootpath});
             }
             else
             {
@@ -399,7 +406,20 @@ app.post('/resubmit', async (req, res, next) => {
     {
         if(req.session.privilege == "admin")
         {
-            res.redirect(rootpath+'adminform');
+            const form = new formidable.IncomingForm();
+  
+            form.parse(req, async (err, fields, files) => {
+                if (err) {
+                    next(err);
+                    return;
+                }
+
+                let userid = fields.userid;
+                await db.delete('/users/' + userid + '/result');
+                
+            });
+
+            res.redirect(rootpath + 'adminform');
         }
         else
         {

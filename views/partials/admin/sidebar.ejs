@@ -48,26 +48,42 @@
 
         <% if(showUser != null) { %> 
             <% if(showUser != -1) { %> 
-                <form action="<%= rootpath %>submit/<%= showUser %>" enctype="multipart/form-data" method="post">
-                    <div class="col py-3">
-                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <% for (let i = 1; i <= 10; i++) { %>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link <%= (i==1)? "active": "" %>" id="i<%= String(i) %>-tab" data-bs-toggle="tab" data-bs-target="#i<%= String(i) %>-tab-pane" type="button" role="tab" aria-controls="i<%= String(i) %>-tab-pane" aria-selected="true" <%= (i>6) ? "disabled": "" %>>หมวดที่ <%= String(i) %></button>
-                                </li>
-                            <% } %>
-                            
-                        </ul>
-                        <div class="tab-content" id="myTabContent">
-                            <% for (let i = 1; i <= 10; i++) { %>
-                                <div class="tab-pane fade <%= (i==1)? "show active": "" %>" id="i<%= String(i) %>-tab-pane" role="tabpanel" aria-labelledby="i<%= String(i) %>-tab" tabindex="0"><%- include('form', {subname: "index"+String(i)}); %></div>
-                            <% } %>
-                            
+                <% if(!checked) { %> 
+                    <form action="<%= rootpath %>submit/<%= showUser %>" enctype="multipart/form-data" method="post">
+                        <div class="col py-3">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <% for (let i = 1; i <= 10; i++) { %>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link <%= (i==1)? "active": "" %>" id="i<%= String(i) %>-tab" data-bs-toggle="tab" data-bs-target="#i<%= String(i) %>-tab-pane" type="button" role="tab" aria-controls="i<%= String(i) %>-tab-pane" aria-selected="true" <%= (i>6) ? "disabled": "" %>>หมวดที่ <%= String(i) %></button>
+                                    </li>
+                                <% } %>
+                                
+                            </ul>
+                            <div class="tab-content" id="myTabContent">
+                                <% for (let i = 1; i <= 10; i++) { %>
+                                    <div class="tab-pane fade <%= (i==1)? "show active": "" %>" id="i<%= String(i) %>-tab-pane" role="tabpanel" aria-labelledby="i<%= String(i) %>-tab" tabindex="0"><%- include('form', {subname: "index"+String(i)}); %></div>
+                                <% } %>
+                                
+                            </div>
                         </div>
-                    </div>
 
-                    <input type="submit" value="ส่งฟอร์ม" class="btn btn-primary"/>
-                </form>
+                        <input type="submit" value="ส่งฟอร์ม" class="btn btn-primary"/>
+                    </form>
+                <% } else { %> 
+                    <div class="col py-3">
+                        <div class="alert alert-success">
+                            <strong>Success!</strong> Form ของคุณถูก Submit เรียบร้อยแล้ว
+                        </div>
+                        <div class="alert alert-danger">
+                            <strong>Warning!</strong> การกดส่งฟอร์มใหม่จะทำให้ผลการตรวจสอบครั้งก่อนหายไป
+                        </div>
+                        <form action="<%= rootpath %>resubmit" enctype="multipart/form-data" method="post">
+                            <input type="hidden" name="userid" value="<%= showUser %>">
+                            <input type="submit" value="ส่งฟอร์มใหม่" class="btn btn-primary"/>
+                            
+                        </form>
+                    </div>
+                <% } %>
             <% } else { %>
                 <%- include('table'); %>
             <% } %>

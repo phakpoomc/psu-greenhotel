@@ -3,6 +3,13 @@
 
     <h1> <%= data[subname].desc %> </h1>
     <div id="<%= subname %>">
+        <div class="input-group mb-3">
+            <div class="input-group-text">
+                <label for="<%= subname %>"> คะแนนรวมรายหมวด: </label>
+                <input type="number" name="<%= subname %>" class="form-control" value="<%= result[subname] %>" disabled>
+            </div>
+        </div>
+
         <% for(let element in sub) {%>
             <p>
                 <div id="<%= element %>">
