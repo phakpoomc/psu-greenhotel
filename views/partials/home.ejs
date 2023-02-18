@@ -1,121 +1,40 @@
-<div class="pricing-header p-3 pb-md-4 mx-auto text-center">
-    <h1 class="display-4 fw-normal">Coaching</h1>
-    <p class="fs-5 text-muted"> ข้อความเกี่ยวกับการโคช </p>
-</div>
-
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-
-    <% for (let i = 0; i < coaching.length; i++) { %>
-        <div class="col">
-            <div class="card shadow-sm">
-                <svg class="bd-placeholder-img card-img-top" width="100%" height="0" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>รูป</title><rect width="100%" height="100%" fill="#55595c"/><figure class="figure"><img src="<%= rootpath %>img/coaching/<%= coaching[i] %>" class="figure-img img-fluid rounded"></figure></svg>
-                <div class="card-body">
-                <p class="card-text">Description รูป</p>
-                
-                </div>
-            </div>
-        </div>
-    <% } %>
-
-    
-</div>
+<% ch = ["ผลกระทบต่อสิ่งแวดล้อมของโรงแรม", "โรงแรมที่เป็นมิตรต่อสิ่งแวดล้อม (Green Hotel)", "การจัดการสิ่งแวดล้อมในโรงแรม", "สินค้าที่เป็นมิตรต่อสิ่งแวดล้อม", "ผลิตภัณฑ์ที่เป็นมิตรต่อสิ่งแวดล้อม"]; %>
 
 <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
-    <h1 class="display-4 fw-normal">ดูงาน</h1>
-    <p class="fs-5 text-muted"> ข้อความเกี่ยวกับการดูงาน </p>
+    <h1 class="display-4 fw-normal"> องค์ความรู้เกี่ยวกับ Green Hotel </h1>
+    <p class="fs-5 text-muted"> Learning About Green Hotel </p>
 </div>
 
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
-    <% for (let i = 0; i < fieldtrip.length; i++) { %>
-        <div class="col">
-            <div class="card shadow-sm">
-                <svg class="bd-placeholder-img card-img-top" width="100%" height="0" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>รูป</title><rect width="100%" height="100%" fill="#55595c"/><figure class="figure"><img src="<%= rootpath %>img/fieldtrip/<%= fieldtrip[i] %>" class="figure-img img-fluid rounded"></figure></svg>
-                <div class="card-body">
-                <p class="card-text">Description รูป</p>
-                
+<div class="accordion" id="knowledge">
+    <% for(let i=0; i<5; i++) { %> 
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="ch-<%= String(i) %>">
+                <button class="accordion-button <%= (i>0)?"collapsed":"" %>" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<%= String(i) %>" aria-expanded=<%= (true)?"true":"false" %> aria-controls="collapse-<%= String(i) %>">
+                <h2>ตอนที่ <%= String(i+1) %>: <%= ch[i] %> </h2>
+                </button>
+            </h2>
+            <div id="collapse-<%= String(i) %>" class="accordion-collapse collapse<%= (i==0)? " show":"" %>" aria-labelledby="ch-<%= String(i) %>" data-bs-parent="#knowledge">
+                <div class="accordion-body">
+                    <%- include('./chapters/ch' + String(i+1)) %>
                 </div>
             </div>
         </div>
     <% } %>
 </div>
-
+   
 <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
-    <h1 class="display-4 fw-normal">เปิดงาน</h1>
-    <p class="fs-5 text-muted"> ข้อความเกี่ยวกับการเปิดงาน </p>
-</div>
+    <h1 class="display-4 fw-normal"> กิจกรรมของศูนย์ </h1>
+    <p class="fs-5 text-muted"> Activities </p>
 
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-
-    <% for (let i = 0; i < openning.length; i++) { %>
-        <div class="col">
-            <div class="card shadow-sm">
-                <svg class="bd-placeholder-img card-img-top" width="100%" height="0" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>รูป</title><rect width="100%" height="100%" fill="#55595c"/><figure class="figure"><img src="<%= rootpath %>img/openning/<%= openning[i] %>" class="figure-img img-fluid rounded"></figure></svg>
-                <div class="card-body">
-                <p class="card-text">Description รูป</p>
-                
-                </div>
-            </div>
-        </div>
-    <% } %>
+    <%- include('./activity.ejs') %>
 </div>
 
 <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
-    <h1 class="display-4 fw-normal">อบรม</h1>
-    <p class="fs-5 text-muted"> ข้อความเกี่ยวกับการอบรม </p>
-</div>
-
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-
-    <% for (let i = 0; i < fieldtrip.length; i++) { %>
-        <div class="col">
-            <div class="card shadow-sm">
-                <svg class="bd-placeholder-img card-img-top" width="100%" height="0" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>รูป</title><rect width="100%" height="100%" fill="#55595c"/><figure class="figure"><img src="<%= rootpath %>img/training/<%= training[i] %>" class="figure-img img-fluid rounded"></figure></svg>
-                <div class="card-body">
-                <p class="card-text">Description รูป</p>
-                
-                </div>
-            </div>
-        </div>
-    <% } %>
-</div>
-
-<div class="pricing-header p-3 pb-md-4 mx-auto text-center">
-    <h1 class="display-4 fw-normal">Workshop</h1>
-    <p class="fs-5 text-muted"> ข้อความเกี่ยวกับ Workshop </p>
-</div>
-
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-
-    <% for (let i = 0; i < fieldtrip.length; i++) { %>
-        <div class="col">
-            <div class="card shadow-sm">
-                <svg class="bd-placeholder-img card-img-top" width="100%" height="0" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>รูป</title><rect width="100%" height="100%" fill="#55595c"/><figure class="figure"><img src="<%= rootpath %>img/workshop/<%= workshop[i] %>" class="figure-img img-fluid rounded"></figure></svg>
-                <div class="card-body">
-                <p class="card-text">Description รูป</p>
-                
-                </div>
-            </div>
-        </div>
-    <% } %>
-</div>
-
-<div class="pricing-header p-3 pb-md-4 mx-auto text-center">
-    <h1 class="display-4 fw-normal">รับวุฒิบัตร</h1>
-    <p class="fs-5 text-muted"> ข้อความเกี่ยวกับการรับวุฒิบัตร </p>
-</div>
-
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-
-    <% for (let i = 0; i < fieldtrip.length; i++) { %>
-        <div class="col">
-            <div class="card shadow-sm">
-                <svg class="bd-placeholder-img card-img-top" width="100%" height="0" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>รูป</title><rect width="100%" height="100%" fill="#55595c"/><figure class="figure"><img src="<%= rootpath %>img/certificate/<%= certificate[i] %>" class="figure-img img-fluid rounded"></figure></svg>
-                <div class="card-body">
-                <p class="card-text">Description รูป</p>
-                
-                </div>
-            </div>
-        </div>
-    <% } %>
+    <h1 class="display-4 fw-normal"> ติดต่อเรา </h1>
+    <p class="fs-5 text-muted"> Contact Us </p>
+    ศูนย์การจัดการนวัตกรรมการท่องเที่ยวเชิงนิเวศ​ คณะการจัดการสิ่งแวดล้อม มหาวิทยาลัยสงขลานครินทร์ <br>
+    15 ถ.กาญจนวนิช ต.คอหงส์ อ.หาดใหญ่ จ.สงขลา 90110 <br>
+    โทรศัพท์ 081 9398195 <br>
+    Email: prachyakorn.c@psu.ac.th
 </div>
