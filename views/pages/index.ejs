@@ -2,6 +2,39 @@
 <html>
     <head>
         <%- include('../partials/head'); %>
+        <style>
+            hr { 
+                background: url('/img/greenhotel.jpg') no-repeat top center;
+                background-size: contain;
+                display: block;
+                height: 70px;
+                border: 0;
+                position: relative;
+                opacity: 100%;
+            }
+            hr:before,
+            hr:after {
+                border-top: 7px double #2d8200;
+                content: '';
+                display: block;
+                position: absolute;
+                /* background: #d0d0ba; */
+                height: 2px;
+                top: 35px;
+            }
+            hr:before {
+                left: 0;
+                right: 52%;
+                margin-right: 10px;
+                margin-left: 10%;
+            }
+            hr:after {
+                right: 0;       
+                left: 52%;
+                margin-left: 10px;
+                margin-right: 10%;
+            }
+        </style>
     </head>
 
     <body>
@@ -16,15 +49,18 @@
             rootpath: rootpath
         }); %>
  
-        <%- include('../partials/home', {
-            coaching: coaching,
-            workshop: workshop,
-            fieldtrip: fieldtrip,
-            openning: openning,
-            certificate: certificate,
-            training: training,
-            rootpath: rootpath
-        }); %>
+        <div class="container ps-auto pe-auto">
+            <%- include('../partials/home', {
+                coaching: coaching,
+                workshop: workshop,
+                fieldtrip: fieldtrip,
+                openning: openning,
+                certificate: certificate,
+                training: training,
+                rootpath: rootpath
+            }); %>
+        </div>
+        
 
     </body>
 </html>
