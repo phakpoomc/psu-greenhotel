@@ -5,7 +5,7 @@
 
 <% for(let i=0; i<content.length; i++) { %> 
     <div class="card mb-3">
-        <img src="/img/event<%= i+1 %>.png" class="card-img-top" alt="event-<%= i+1 %>">
+        <img src="<%= rootpath %>img/event<%= i+1 %>.png" class="card-img-top" alt="event-<%= i+1 %>">
         <div class="card-body">
         <h5 class="card-title"><%= header[i] %></h5>
         <p class="card-text"> <%= content[i] %> </p>
