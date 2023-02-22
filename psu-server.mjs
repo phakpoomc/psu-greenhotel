@@ -303,7 +303,7 @@ app.get('/userresult', async (req, res) => {
             }
             else
             {
-                res.send('ฟอร์มยังไม่ได้รับการตรวจจาก Admin');
+                res.render('./pages/userform.ejs', {username: session.userid, data: jsonForm, forms: data['form'], result: "noresult", rootpath: rootpath, visitor: counters[key] || 1});
             }
             
         }
