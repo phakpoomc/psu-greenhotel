@@ -11,3 +11,24 @@
 .sticky-offset {
     top: 56px;
 }
+
+*{
+    font-family: 'Kanit', sans-serif;
+}
+
+.accordion-item .accordion-button:not(.collapsed) {
+    background-color: #3ebe4f;
+    color: #fff;
+}
+  
+.chapter-content{
+    font-size: 20px;
+}
+
+code{
+    color: blue;
+}
+
+.side-bar{
+    font-size: 20px;
+}

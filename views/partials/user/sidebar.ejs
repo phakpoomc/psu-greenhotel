@@ -1,32 +1,32 @@
 <div class="container-fluid">
-    <div class="row flex-nowrap">
-        <div id="sidenav" class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
-            <div class="overflow-auto sticky-top sticky-offset d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white" style="height:calc(100vh - 50px);">
+    <div class="row flex-nowrap" style="margin-right:400px;">
+        <div id="sidenav" class="col-auto col-md-3 col-xl-2 px-sm-2 px-0" style="min-height: calc(100vh - 100px); top: 0; left: 0; bottom: 0; background-color: rgba(146, 135, 135, 0.308); width: 350px; margin-right: 20px;">
+            <div id="sidebar" class="overflow-auto sticky-top sticky-offset d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white" style="height:calc(100vh - 120px); position: fixed; margin-top: 50px; transform: translateX(1);">
                 <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                    <span class="fs-5 d-none d-sm-inline">Menu</span>
+                    <span class="fs-5 d-none d-sm-inline" style="color: rgba(11, 83, 11); font-size: 30px;">เลือกเมนู</span>
                 </a>
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li class="nav-item">
                         <a href="<%= rootpath %>" class="nav-link align-middle px-0">
-                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Home</span>
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline side-bar" style="color: black;">หน้าหลัก</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="<%= rootpath %>userform" class="nav-link align-middle px-0">
-                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">กรอกฟอร์ม</span>
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline side-bar" style="color: black;">กรอกฟอร์ม</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="<%= rootpath %>userresult" class="nav-link align-middle px-0">
-                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">ผลการประเมิน</span>
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline side-bar" style="color: black;">ผลการประเมิน</span>
                         </a>
                     </li>
                 
                     
                 </ul>
 
-                <div class="dropdown pb-4">
-                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="dropdown pb-4" style="position: fixed; margin-top: calc(100vh - 160px)">
+                    <a href="#" class="d-flex align-items-center text-black text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="<%= profilepic %>" alt="hugenerd" width="30" height="30" class="rounded-circle">
                         <span class="d-none d-sm-inline mx-1"><%= name %></span>
                     </a>
@@ -43,9 +43,9 @@
                     <div class="alert alert-success">
                         <strong>Success!</strong> Form ของคุณถูก Submit เรียบร้อยแล้ว กรุณารอ Admin ตรวจสอบ
                     </div>
-                    <div class="alert alert-danger">
+                    <!-- <div class="alert alert-danger">
                         <strong>Warning!</strong> การกดส่งฟอร์มใหม่จะทำให้ข้อมูลฟอร์มเก่ารวมถึงผลการตรวจสอบหายไป
-                    </div>
+                    </div> -->
                     <form action="<%= rootpath %>resubmit" enctype="multipart/form-data" method="post">
 
                         <input type="submit" value="ส่งฟอร์มใหม่" class="btn btn-primary"/>
@@ -82,3 +82,4 @@
         <% } %>
     </div>
 </div>
+

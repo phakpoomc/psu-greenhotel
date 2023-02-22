@@ -3,13 +3,13 @@
 
 <% let edate = ["28 กุมภาพันธ์ - 1 มีนาคม 2565", "2 มีนาคม 2565", "26 กรกฎาคม 2565", "23-24 สิงหาคม 2565", "27-28 ตุลาคม 2565", ""]; %>
 
-<% for(let i=0; i<content.length; i++) { %> 
+<% for(let i=content.length-1; i>=0; i--) { %> 
     <div class="card mb-3">
         <img src="<%= rootpath %>img/event<%= i+1 %>.png" class="card-img-top" alt="event-<%= i+1 %>">
         <div class="card-body">
-        <h5 class="card-title"><%= header[i] %></h5>
-        <p class="card-text"> <%= content[i] %> </p>
-        <p class="card-text"><small class="text-muted"> <%= edate[i] %> </small></p>
+        <h3 class="card-title"><%= header[i] %></h3>
+        <p class="card-text" style="font-size: 1.25em;"> <%= content[i] %> </p>
+        <p class="card-text" style="font-size: 1.25em;"><small class="text-muted"> <%= edate[i] %> </small></p>
         </div>
     </div>
 <% } %>

@@ -1,6 +1,8 @@
 <p>
+
     <% let sub = data[subname].sub; %>
 
+    <% if(data[subname].desc) { %>
     <h1> <%= data[subname].desc %> </h1>
     <div id="<%= subname %>">
         <div class="input-group mb-3">
@@ -165,4 +167,5 @@
 
         <% } %>
     </div>
+    <% } %>
 </p>

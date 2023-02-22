@@ -3,13 +3,13 @@
 <hr>
 
 <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
-    <h1 class="display-4 fw-normal"> <img src="<%= rootpath %>img/knowledge.png" style="height: 65px;"> องค์ความรู้เกี่ยวกับ Green Hotel </h1>
-    <p class="fs-5 text-muted"> Learning About Green Hotel </p>
+    <h1 class="display-4 fw-normal" style="color: #000066;"> <img src="<%= rootpath %>img/knowledge.png" style="height: 65px;"> ความรู้เกี่ยวกับ Green Hotel </h1>
+    <p class="fs-10 text-muted" style="font-size: 25px;"> Learning About Green Hotel </p>
 </div>
 
 
 <div class="accordion" id="knowledge">
-    <% for(let i=0; i<5; i++) { %> 
+    <% for(let i=4; i>=0; i--) { %> 
         <div class="accordion-item">
             <h2 class="accordion-header" id="ch-<%= String(i) %>">
                 <button class="accordion-button <%= (i>0)?"collapsed":"" %>" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<%= String(i) %>" aria-expanded=<%= (true)?"true":"false" %> aria-controls="collapse-<%= String(i) %>">
@@ -17,7 +17,7 @@
                 </button>
             </h2>
             <div id="collapse-<%= String(i) %>" class="accordion-collapse collapse<%= (i==0)? " show":"" %>" aria-labelledby="ch-<%= String(i) %>" data-bs-parent="#knowledge">
-                <div class="accordion-body">
+                <div class="accordion-body chapter-content">
                     <%- include('./chapters/ch' + String(i+1)) %>
                 </div>
             </div>
@@ -28,8 +28,8 @@
 <hr>
    
 <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
-    <h1 class="display-4 fw-normal"> <img src="<%= rootpath %>img/activity.png" style="height: 65px;"> กิจกรรมของศูนย์ </h1>
-    <p class="fs-5 text-muted"> Activities </p>
+    <h1 class="display-4 fw-normal" style="color: #000066;"> <img src="<%= rootpath %>img/activity.png" style="height: 65px;"> กิจกรรมของศูนย์ </h1>
+    <p class="fs-10 text-muted" style="font-size: 25px;"> Activities </p>
 
     <%- include('./activity.ejs') %>
 </div>
@@ -37,8 +37,8 @@
 <hr>
 
 <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
-    <h1 class="display-4 fw-normal"> <img src="<%= rootpath %>img/contactus.png" style="height: 65px;"> ติดต่อเรา </h1>
-    <p class="fs-5 text-muted"> Contact Us </p>
+    <h1 class="display-4 fw-normal" style="color: #000066;"> <img src="<%= rootpath %>img/contactus.png" style="height: 65px;"> ติดต่อเรา </h1>
+    <p class="fs-10 text-muted" style="font-size: 25px;"> Contact Us </p>
     ศูนย์การจัดการนวัตกรรมการท่องเที่ยวเชิงนิเวศ​ คณะการจัดการสิ่งแวดล้อม มหาวิทยาลัยสงขลานครินทร์ <br>
     15 ถ.กาญจนวนิช ต.คอหงส์ อ.หาดใหญ่ จ.สงขลา 90110 <br>
     โทรศัพท์ 081 9398195 <br>

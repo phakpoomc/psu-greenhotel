@@ -1,4 +1,4 @@
-<p>
+<p class="fs-3">
     <% let sub = data[subname].sub; %>
     <h1> <%- data[subname].desc %> </h1>
     <div id="<%= subname %>">
@@ -17,7 +17,7 @@
                         <% for(let c in sub[element].checkbox) { %> 
                             <div class="input-group mb-3">
                                 <div class="input-group-text">
-                                  <input name="<%= c %>" class="form-check-input mt-0" type="checkbox" value="true" aria-label="Checkbox for following text">
+                                <input name="<%= c %>" class="form-check-input mt-0" type="checkbox" value="true" aria-label="Checkbox for following text">
                                 </div>
                                 <%= sub[element].checkbox[c].desc %>
                             </div>

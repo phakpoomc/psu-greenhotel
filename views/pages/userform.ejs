@@ -13,9 +13,10 @@
                 document.getElementById("topnav").classList.remove("custom-hide");
             };
         </script>
+        
     </head>
 
-    <body onkeypress="checkPrint(event)">
+    <body onkeypress="checkPrint(event)" style="font-size: 1.25em;">
         <%- include('../partials/navbar'); %>
         <%- include('../partials/user/sidebar', {name: username, profilepic: "https://github.com/mdo.png", data: data}); %>
 

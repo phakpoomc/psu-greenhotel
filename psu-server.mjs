@@ -5,6 +5,7 @@ import path from 'path';
 import { JsonDB, Config } from 'node-json-db';
 import sessions from 'express-session';
 import crypto from 'crypto';
+import expressVisitorCounter from 'express-visitor-counter';
 
 var db = new JsonDB(new Config("psu-db", true, false, '/'));
 
@@ -13,11 +14,12 @@ var data = await db.getData('/');
 var currentID = data.currentID || 0;
 
 var rootdir = process.cwd();
-var rootpath = "/"; //"/psu-demo/"
+var rootpath = "/psu-demo/"; //"/psu-demo/"
+var svname = "se-sskru.com-";
 
 var jsonForm = "";
 
-
+var counters = data.counters || {};
 
 fs.readFile('standardindex.json', 'utf8', (err, data) => {
     if (err) throw err;
@@ -52,13 +54,21 @@ function generateUserId() {
     return crypto.randomBytes(8).toString('hex');
 }
 
+async function updateCounter(counterId)
+{
+    counters[counterId] = (counters[counterId] || 0) + 1;
+    await db.push('/counter', counters, false);
+}
+
 const app = express();
+app.enable('trust proxy');
 app.use(sessions({
     secret: 'PSUgr33nh0tel53cr3tkEy',
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 1000*60*60*24*7, secure: false, httpOnly: true }
 }));
+app.use(expressVisitorCounter({hook: updateCounter}));
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
@@ -69,6 +79,13 @@ app.get('/', (req, res) => {
     let certificate = fs.readdirSync('./img/certificate');
     let training = fs.readdirSync('./img/training');
 
+    let date = new Date();
+    let key = svname+'visitors-'+("0" + date.getDate()).slice(-2)+'-'+String(("0" + (date.getMonth() + 1)).slice(-2))+'-'+date.getFullYear()
+
+    console.log(key);
+
+    console.log(counters);
+
     res.render('./pages/index.ejs', {
         coaching: coaching,
         workshop: workshop,
@@ -76,7 +93,8 @@ app.get('/', (req, res) => {
         openning: openning,
         certificate: certificate,
         training: training,
-        rootpath: rootpath
+        rootpath: rootpath,
+        visitor: counters[key] || 1
     });
 });
 
@@ -129,6 +147,9 @@ app.get('/createAccount', async (req, res) => {
         let users = await db.getData('/users');
         let forms = {};
         let sidebarList = {};
+        let date = new Date();
+        let key = svname+'visitors-'+("0" + date.getDate()).slice(-2)+'-'+String(("0" + (date.getMonth() + 1)).slice(-2))+'-'+date.getFullYear()
+
 
         for(let user of Object.getOwnPropertyNames(users))
         {
@@ -140,7 +161,8 @@ app.get('/createAccount', async (req, res) => {
             forms[users[user].info.username] = users[user].info;
         }
 
-        res.render('./pages/adminform.ejs', {username: session.userid, sidebarList: sidebarList, userList: forms, showUser: -1, rootpath: rootpath});
+
+        res.render('./pages/adminform.ejs', {username: session.userid, sidebarList: sidebarList, userList: forms, showUser: -1, rootpath: rootpath, visitor: counters[key] || 1});
     }
     else
     {
@@ -239,14 +261,17 @@ app.get('/userform', async (req, res) => {
         else
         {
             let data = await db.getData('/users/' + session.userid);
+            let date = new Date();
+            let key = svname+'visitors-'+("0" + date.getDate()).slice(-2)+'-'+String(("0" + (date.getMonth() + 1)).slice(-2))+'-'+date.getFullYear()
+
 
             if(data['form'] == null)
             {
-                res.render('./pages/userform.ejs', {username: session.userid, data: jsonForm, result: null, rootpath: rootpath, submit: false});
+                res.render('./pages/userform.ejs', {username: session.userid, data: jsonForm, result: null, rootpath: rootpath, submit: false, visitor: counters[key] || 1});
             }
             else
             {
-                res.render('./pages/userform.ejs', {username: session.userid, data: jsonForm, result: null, rootpath: rootpath, submit: true});
+                res.render('./pages/userform.ejs', {username: session.userid, data: jsonForm, result: null, rootpath: rootpath, submit: true, visitor: counters[key] || 1});
             }
         }
     }
@@ -268,10 +293,13 @@ app.get('/userresult', async (req, res) => {
         else
         {
             let data = await db.getData('/users/' + session.userid);
+            let date = new Date();
+            let key = svname+'visitors-'+("0" + date.getDate()).slice(-2)+'-'+String(("0" + (date.getMonth() + 1)).slice(-2))+'-'+date.getFullYear()
+
 
             if(data['result'] != null)
             {
-                res.render('./pages/userform.ejs', {username: session.userid, data: jsonForm, forms: data['form'], result: data['result'], rootpath: rootpath});
+                res.render('./pages/userform.ejs', {username: session.userid, data: jsonForm, forms: data['form'], result: data['result'], rootpath: rootpath, visitor: counters[key] || 1});
             }
             else
             {
@@ -293,6 +321,9 @@ app.get('/adminform', async (req, res) => {
     {
         let users = await db.getData('/users');
         let sidebarList = {};
+        let date = new Date();
+        let key = svname+'visitors-'+("0" + date.getDate()).slice(-2)+'-'+String(("0" + (date.getMonth() + 1)).slice(-2))+'-'+date.getFullYear()
+
 
         for(let user of Object.getOwnPropertyNames(users))
         {
@@ -302,7 +333,7 @@ app.get('/adminform', async (req, res) => {
             }
         }
 
-        res.render('./pages/adminform.ejs', {username: session.userid, sidebarList: sidebarList, data: jsonForm, showUser: null, rootpath: rootpath});
+        res.render('./pages/adminform.ejs', {username: session.userid, sidebarList: sidebarList, data: jsonForm, showUser: null, rootpath: rootpath, visitor: counters[key] || 1});
     }
     else
     {
@@ -332,13 +363,16 @@ app.get('/adminform/:userid', async (req, res) => {
             if(users[req.params.userid]['form'] != null)
             {
                 let formChecked = false;
+                let date = new Date();
+                let key = svname+'visitors-'+("0" + date.getDate()).slice(-2)+'-'+String(("0" + (date.getMonth() + 1)).slice(-2))+'-'+date.getFullYear()
+
 
                 if(users[req.params.userid]['result'] != null)
                 {
                     formChecked = true;
                 }
 
-                res.render('./pages/adminform.ejs', {username: session.userid, sidebarList: sidebarList, forms: users[req.params.userid]['form'], data: jsonForm, showUser: req.params.userid, checked: formChecked, rootpath: rootpath});
+                res.render('./pages/adminform.ejs', {username: session.userid, sidebarList: sidebarList, forms: users[req.params.userid]['form'], data: jsonForm, showUser: req.params.userid, checked: formChecked, rootpath: rootpath, visitor: counters[key] || 1});
             }
             else
             {
