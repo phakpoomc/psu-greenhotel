@@ -185,9 +185,15 @@ app.post('/updatePassword', async (req, res) => {
 
             let username = fields.username;
             let password = fields.password;
+			let pattern = /\W/;
 
-            await db.push('/users/' + username + '/info/password', password, false);
-            res.redirect(rootpath + 'createAccount');
+            if(username && username.length > 4 && !pattern.test(username) && password && password.length > 6 && !pattern.test(password))
+            {
+		        await db.push('/users/' + username + '/info/password', password, false);
+		        
+	        }
+	        res.redirect(rootpath + 'createAccount');
+	        
         });
 
 
@@ -227,9 +233,9 @@ app.post('/createAccount', async (req, res, next) => {
 
             let username = fields.username;
             let password = fields.password;
-            let pattern = /\w*/;
+            let pattern = /\W/;
 
-            if(username && username.length > 4 && pattern.test(username) && password && password.length > 6 && pattern.test(password))
+            if(username && username.length > 4 && !pattern.test(username) && password && password.length > 6 && !pattern.test(password))
             {
                 await db.push('/users/' + username + '/info', {"username": username, "password": password, "id": ++currentID, "privilege": "user"}, false);
                 await db.push('/currentID', currentID);
