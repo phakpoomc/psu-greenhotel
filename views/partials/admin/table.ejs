@@ -1,3 +1,24 @@
+<script>
+    // This function takes a parameter n which is the length of the password
+    function randomPassword(n) {
+        // Define a string of possible characters to use
+        var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
+        // Initialize an empty string to store the password
+        var password = "";
+        // Loop n times and append a random character from chars to password
+        for (var i = 0; i < n; i++) {
+            // Generate a random index between 0 and chars.length - 1
+            var index = Math.floor(Math.random() * chars.length);
+            // Get the character at that index and add it to password
+            password += chars[index];
+        }
+        // Return the generated password
+
+        document.getElementById("newUserPassword").value = password;
+        // return password;
+    }
+</script>
+
 <div class="col py-3">
     <div class="alert alert-warning">
         <strong>Warning!</strong> User ID ต้องยาวมากกว่า 4 อักษร และ Password ต้องยาวมากกว่า 6 อักษร และต้องใช้แค่ตัวอักษร ตัวเลข หรือ underscore 
@@ -6,10 +27,10 @@
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Username</th>
-                <th scope="col">Password</th>
-                <th scope="col">Privilege</th>
-                <th scope="col">Action</th>
+                <th scope="col">ชื่อผู้ใช้งาน</th>
+                <th scope="col">รหัสผ่าน</th>
+                <th scope="col">ประเภทผู้ใช้งาน</th>
+                <th scope="col">คำสั่ง</th>
             </tr>
         </thead>
         <tbody>
@@ -21,13 +42,13 @@
                         <th> <%= userList[u].username %> </th>
                         <th>
                             <input name="username" type="hidden" value="<%= userList[u].username %>">
-                            <input name="password" class="form-control" type="text" placeholder="Password" value="<%= userList[u].password %>">
+                            <input name="password" class="form-control" type="text" placeholder="กรอกรหัสผ่าน" value="<%= userList[u].password %>">
                         </th>
                         <th> <%= userList[u].privilege %> </th>
                         <th> 
-                            <input type="submit" value="Update Password" class="btn btn-success"/>
+                            <input type="submit" value="อัพเดทรหัสผ่าน" class="btn btn-success"/>
                             <% if(userList[u].privilege != 'admin') { %>
-                                <a href="<%= rootpath %>removeAccount/<%= userList[u].username %>" class="btn btn-danger">Remove</a>
+                                <a href="<%= rootpath %>removeAccount/<%= userList[u].username %>" class="btn btn-danger">ลบผู้ใช้งานนี้</a>
                             <% } %>
 
                         </th>
@@ -40,16 +61,17 @@
                         <input class="form-control" type="text" placeholder="#" disabled>
                     </th>
                     <th> 
-                        <input name="username" class="form-control" type="text" placeholder="Username">
+                        <input name="username" class="form-control" type="text" placeholder="กรอกชื่อผู้ใช้งาน">
                     </th>
                     <th> 
-                        <input name="password" class="form-control" type="text" placeholder="Password">
+                        <input id="newUserPassword" name="password" class="form-control" type="text" placeholder="กรอกรหัสผ่าน">
                     </th>
                     <th> 
                         <input class="form-control" type="text" placeholder="user" disabled>
                     </th>
                     <th> 
-                        <input type="submit" value="Add" class="btn btn-success"/>
+                        <input type="submit" value="เพิ่มผู้ใช้งาน" class="btn btn-success"/>
+                        <button type="button" class="btn btn-warning" onclick="randomPassword(8)"> แรนดอมรหัสผ่าน </button>
                     </th>
                 </form>
             </tr>
