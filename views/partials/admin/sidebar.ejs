@@ -16,6 +16,11 @@
                             <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline side-bar" style="color: black;">จัดการ Account ผู้ใช้งาน</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="<%= rootpath %>createActivity" class="nav-link align-middle px-0">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline side-bar" style="color: black;">จัดการกิจกรรมของศูนย์</span>
+                        </a>
+                    </li>
                     <li>
                         <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
                              <span class="ms-1 d-none d-sm-inline side-bar" style="color: black;">ฟอร์มทั้งหมด</span> </a>
@@ -85,7 +90,11 @@
                     </div>
                 <% } %>
             <% } else { %>
-                <%- include('table'); %>
+                <% if(activity == null) { %> 
+                    <%- include('table'); %>
+                <% } else { %> 
+                    <%- include('activity'); %>
+                <% } %>
             <% } %>
         <% } %>
     </div>

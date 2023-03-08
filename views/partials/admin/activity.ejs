@@ -1,0 +1,42 @@
+<div class="col py-3">
+    <% for(let e of activity) { %>
+        <div>
+            <form action="<%= rootpath %>createActivity/<%= e.id %>" enctype="multipart/form-data" method="post">
+                ID: <input class="form-control" type="text" placeholder="#<%= e.id %>" disabled>
+                <br>
+                หัวข้อ: <input name="header" class="form-control" type="text" value="<%= e.header %>">
+                <br>
+                เนื้อหา: <textarea class="form-control" name="content" rows="3" cols="100"><%= e.content %></textarea>
+                <br>
+                วันที่: <input name="date" class="form-control" type="text" value="<%= e.date %>">
+                <br>
+
+                <label for="image" class="form-label"><b>แทนที่รูป</b> </label>
+                <input class="form-control" type="file" name="image">
+                <br>
+
+                <input type="submit" value="อัพเดทข้อมูล" class="btn btn-success"/>
+                <a href="<%= rootpath %>removeActivity/<%= e.id %>" class="btn btn-danger">ลบกิจกรรมนี้</a>
+            </form>
+
+            <hr>
+        </div>
+    <% } %>
+
+    <div>
+        <form action="<%= rootpath %>createActivity/-1" enctype="multipart/form-data" method="post">
+            ID: <input class="form-control" type="text" placeholder="#" disabled>
+            <br>
+            หัวข้อ: <input name="header" class="form-control" type="text" placeholder="หัวข้อ">
+            <br>
+            เนื้อหา: <textarea class="form-control" name="content" rows="3" cols="100" placeholder="เนื้อหา"></textarea>
+            <br>
+            วันที่: <input name="date" class="form-control" type="text" placeholder="วันที่">
+            <br>
+            <label for="image" class="form-label"><b>อัพโหลดรูป</b> </label>
+            <input class="form-control" type="file" name="image">
+            <br>
+            <input type="submit" value="เพิ่มกิจกรรม" class="btn btn-success"/>
+        </form>
+    </div>
+</div>

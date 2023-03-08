@@ -7,6 +7,24 @@ import sessions from 'express-session';
 import crypto from 'crypto';
 import expressVisitorCounter from 'express-visitor-counter';
 
+import { Sequelize, Model, DataTypes } from 'sequelize';
+
+const sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage: './database.sqlite'
+});
+
+sequelize.authenticate();
+
+const Activity = sequelize.define('activities', {
+    header: DataTypes.STRING,
+    content: DataTypes.STRING,
+    date: DataTypes.STRING,
+    url: DataTypes.STRING
+});
+
+sequelize.sync({force: false});
+
 var db = new JsonDB(new Config("psu-db", true, false, '/'));
 
 var data = await db.getData('/');
@@ -14,8 +32,8 @@ var data = await db.getData('/');
 var currentID = data.currentID || 0;
 
 var rootdir = process.cwd();
-var rootpath = "/psu-demo/"; //"/psu-demo/"
-var svname = "se-sskru.com-";
+var rootpath = "/"; //"/psu-demo/"
+var svname = "psugreenhotel.com-"; // se-sskru.com-
 
 var jsonForm = "";
 
@@ -71,7 +89,7 @@ app.use(sessions({
 app.use(expressVisitorCounter({hook: updateCounter}));
 app.set('view engine', 'ejs');
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
     let coaching = fs.readdirSync('./img/coaching');
     let workshop = fs.readdirSync('./img/workshop');
     let fieldtrip = fs.readdirSync('./img/fieldtrip');
@@ -82,9 +100,9 @@ app.get('/', (req, res) => {
     let date = new Date();
     let key = svname+'visitors-'+("0" + date.getDate()).slice(-2)+'-'+String(("0" + (date.getMonth() + 1)).slice(-2))+'-'+date.getFullYear()
 
-    console.log(key);
-
-    console.log(counters);
+    const activity = await Activity.findAll({order: [
+        ['id', 'DESC']
+    ]});
 
     res.render('./pages/index.ejs', {
         coaching: coaching,
@@ -94,7 +112,17 @@ app.get('/', (req, res) => {
         certificate: certificate,
         training: training,
         rootpath: rootpath,
-        visitor: counters[key] || 1
+        visitor: counters[key] || 1,
+        activity: activity || {}
+    });
+});
+
+app.get('/createDB', async (req, res) => {
+    const c = await Activity.create({
+        header: "Coaching โรงแรมดีวาน่า พลาซ่า",
+        content: "ศูนย์การจัดการนวัตกรรมการท่องเที่ยวเชิงนิเวศ คณะการจัดการสิ่งแวดล้อม มอ. จัดกิจกรรม Coaching ให้กับโรงแรมในจังหวัดกระบี่ เพื่อขอมาตรฐานการจัดการโรงแรมที่ได้มาตรฐานสิ่งแวดล้อม (Green Hotel) ณ โรงแรม ดีวาน่า พลาซ่า อ่าวนาง จังหวัดกระบี่ ระหว่างวันที่ 28 กุมภาพันธ์ - 1 มีนาคม 2565 ได้รับการสนับสนุนงบประมาณจาก สำนักงานการท่องเที่ยวและกีฬา (ทกจ.) กระบี่",
+        date: "28 กุมภาพันธ์ - 1 มีนาคม 2565",
+        url: rootpath + "/img/event1.png" 
     });
 });
 
@@ -162,7 +190,41 @@ app.get('/createAccount', async (req, res) => {
         }
 
 
-        res.render('./pages/adminform.ejs', {username: session.userid, sidebarList: sidebarList, userList: forms, showUser: -1, rootpath: rootpath, visitor: counters[key] || 1});
+        res.render('./pages/adminform.ejs', {username: session.userid, sidebarList: sidebarList, userList: forms, showUser: -1, rootpath: rootpath, visitor: counters[key] || 1, activity: null});
+    }
+    else
+    {
+        res.redirect(rootpath);
+    }
+});
+
+app.get('/createActivity', async (req, res) => {
+    let session = req.session;
+
+    if(session.userid != null && session.privilege == "admin")
+    {
+        let users = await db.getData('/users');
+        let forms = {};
+        let sidebarList = {};
+        let date = new Date();
+        let key = svname+'visitors-'+("0" + date.getDate()).slice(-2)+'-'+String(("0" + (date.getMonth() + 1)).slice(-2))+'-'+date.getFullYear()
+
+        const activity = await Activity.findAll({order: [
+            ['id', 'DESC']
+        ]});
+
+        for(let user of Object.getOwnPropertyNames(users))
+        {
+            if(users[user]['form'] != null)
+            {
+                sidebarList[users[user].info.username] = true;
+            }
+
+            forms[users[user].info.username] = users[user].info;
+        }
+
+
+        res.render('./pages/adminform.ejs', {username: session.userid, sidebarList: sidebarList, userList: forms, showUser: -1, rootpath: rootpath, visitor: counters[key] || 1, activity: activity});
     }
     else
     {
@@ -185,15 +247,9 @@ app.post('/updatePassword', async (req, res) => {
 
             let username = fields.username;
             let password = fields.password;
-			let pattern = /\W/;
 
-            if(username && username.length > 4 && !pattern.test(username) && password && password.length > 6 && !pattern.test(password))
-            {
-		        await db.push('/users/' + username + '/info/password', password, false);
-		        
-	        }
-	        res.redirect(rootpath + 'createAccount');
-	        
+            await db.push('/users/' + username + '/info/password', password, false);
+            res.redirect(rootpath + 'createAccount');
         });
 
 
@@ -220,6 +276,21 @@ app.get('/removeAccount/:username', async (req, res) => {
     }
 });
 
+app.get('/removeActivity/:id', async (req, res) => {
+    if(req.session.userid != null && req.session.privilege == "admin")
+    {
+        const c = await Activity.findByPk(req.params.id);
+
+        c.destroy();
+
+        res.redirect(rootpath+'createActivity');
+    }
+    else
+    {
+        res.redirect(rootpath);
+    }
+});
+
 app.post('/createAccount', async (req, res, next) => {
     if(req.session.userid != null && req.session.privilege == "admin")
     {
@@ -233,9 +304,9 @@ app.post('/createAccount', async (req, res, next) => {
 
             let username = fields.username;
             let password = fields.password;
-            let pattern = /\W/;
+            let pattern = /\w*/;
 
-            if(username && username.length > 4 && !pattern.test(username) && password && password.length > 6 && !pattern.test(password))
+            if(username && username.length > 4 && pattern.test(username) && password && password.length > 6 && pattern.test(password))
             {
                 await db.push('/users/' + username + '/info', {"username": username, "password": password, "id": ++currentID, "privilege": "user"}, false);
                 await db.push('/currentID', currentID);
@@ -246,6 +317,67 @@ app.post('/createAccount', async (req, res, next) => {
             {
                 res.redirect(rootpath+'createAccount');
             }
+            
+        });
+    }
+    else
+    {
+        res.redirect(rootpath);
+    }
+});
+
+app.post('/createActivity/:id', async (req, res, next) => {
+    if(req.session.userid != null && req.session.privilege == "admin")
+    {
+        const form = new formidable.IncomingForm();
+  
+        form.parse(req, async (err, fields, files) => {
+            if (err) {
+                next(err);
+                return;
+            }
+
+            let id = parseInt(req.params.id);
+            let header = fields.header;
+            let content = fields.content;
+            let date = fields.date;
+
+
+            
+            if(id == -1)
+            {
+                const c = await Activity.create({
+                    header: header,
+                    content: content,
+                    date: date
+                });
+
+                moveFile(files.image.filepath, rootdir + "/img/", "event" + c.id + ".png");
+
+                c.url = rootpath + "/img/event" + String(c.id) + ".png";
+                c.save();
+            }
+            else if(id >= 0)
+            {
+                if(files.image.size > 0)
+                {
+                    moveFile(files.image.filepath, rootdir + "/img/", "event" + String(id) + ".png");
+                }
+
+                const c = await Activity.findByPk(id);
+                c.update({
+                    header: header,
+                    content: content,
+                    date: date,
+                    url: rootpath + "/img/event" + String(id) + ".png" 
+                });
+            }
+            else
+            {
+
+            }
+            
+            res.redirect(rootpath+'createActivity');
             
         });
     }
@@ -663,6 +795,10 @@ app.get('/uploads/:username/:index/:imgname', (req, res) => {
 
     res.sendFile(path.join('./uploads/', req.params.username, req.params.index, req.params.imgname), options);
 })
+
+app.get("*", (req, res) => {
+    req.redirect(rootpath);
+});
 
 app.listen(3000, () => {
   console.log('Server listening on http://localhost:3000 ...');
