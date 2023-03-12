@@ -797,7 +797,7 @@ app.get('/uploads/:username/:index/:imgname', (req, res) => {
 })
 
 app.get("*", (req, res) => {
-    req.redirect(rootpath);
+    res.redirect(rootpath);
 });
 
 app.listen(3000, () => {

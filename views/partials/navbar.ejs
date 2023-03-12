@@ -1,15 +1,15 @@
 <nav id="topnav" class="navbar navbar-expand-lg sticky-top" data-bs-theme="dark" style="background-color:#055216d5; height: 100px; opacity: 1; font-family: 'Kanit', sans-serif;">
     <div class="container-fluid">
-        <a class="navbar-brand" href="<%= rootpath %>" style="font-size:28px;">
+        <a class="navbar-brand for-large" href="<%= rootpath %>" style="font-size:28px;">
             <img src="<%= rootpath %>img/PSU_Logo.png" style="margin-top: 10px;" alt="Logo" width="85" height="80" class="d-inline-block align-text-center">
             ศูนย์การจัดการนวัตกรรมการท่องเที่ยวเชิงนิเวศ (PSU)
         </a>
 
-        <div class="collapse navbar-collapse">
+        <div class="navbar-brand">
             <div class="navbar-nav ms-auto" style="font-size: 22px;">
                 <a class="nav-link active" aria-current="page" href="<%= rootpath %>">หน้าหลัก</a>
                 <a class="nav-link active" href="<%= rootpath %>userform">ส่งฟอร์มตรวจสอบโรงแรม</a>
-                <div class="ps-3 border-4 border-warning align-text-center border-start" style="margin-left: 30px; font-size: 18px; margin-right: 20px; color: white;">
+                <div class="for-large ps-3 border-4 border-warning align-text-center border-start" style="margin-left: 30px; font-size: 18px; margin-right: 20px; color: white;">
                     วันที่ <%= new Date().toLocaleDateString(); %> <br>
                     
                     ผู้เข้าชมวันนี้ <%= visitor %>
@@ -24,4 +24,11 @@
     #topnav {
         background-color: #067a1f; /* Set your desired color here */
     }
-    </style>
+
+    @media(max-width: 1250px) {
+        .for-large{
+            display: none;
+        }
+    }
+
+</style>
